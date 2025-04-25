@@ -202,6 +202,7 @@ export default function Home() {
             "bg-[#a8c2ed] text-black transition-width duration-300 overflow-hidden",
             isSidebarOpen ? "w-64 p-4 border-r" : "w-12 p-2"
           )}
+          style={{zIndex: 2}}
         >
           <Button
             variant="ghost"
@@ -317,3 +318,4 @@ const DoctorCard: React.FC<DoctorCardProps> = ({doctor}) => {
     </Card>
   );
 };
+
