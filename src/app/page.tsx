@@ -315,4 +315,3 @@ const DoctorCard: React.FC<DoctorCardProps> = ({doctor}) => {
     </Card>
   );
 };
-
