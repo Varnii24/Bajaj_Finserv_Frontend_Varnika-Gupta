@@ -211,7 +211,7 @@ export default function Home() {
           </Button>
 
           {isSidebarOpen && (
-            <ScrollArea className="h-[calc(100vh-150px)] w-full">
+            <ScrollArea className="h-[calc(100vh-150px)] w-full pr-2">
               {/* Specialty Filter */}
               <Accordion type="single" collapsible>
                 <AccordionItem value="specialties">
@@ -315,3 +315,4 @@ const DoctorCard: React.FC<DoctorCardProps> = ({doctor}) => {
     </Card>
   );
 };
+
