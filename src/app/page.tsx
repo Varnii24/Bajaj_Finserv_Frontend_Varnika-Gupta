@@ -5,9 +5,10 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {cn} from "@/lib/utils";
-import {Check, PanelLeft, PanelRight} from "lucide-react";
+import {PanelLeft, PanelRight} from "lucide-react";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {ScrollArea} from "@/components/ui/scroll-area";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 interface Doctor {
   id: string;
@@ -205,57 +206,46 @@ export default function Home() {
               <div data-testid="filter-header-speciality" className="font-semibold mb-2">
                 Speciality
               </div>
-              {specialties.map((specialty) => (
-                <label key={specialty} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    className="shrink-0"
-                    checked={specialtyFilters.includes(specialty)}
-                    onChange={() => handleSpecialtyFilterChange(specialty)}
-                    data-testid={`filter-specialty-${specialty.replace(/ /g, '-')}`}
-                  />
-                  <span>{specialty}</span>
-                </label>
-              ))}
+              <Select onValueChange={(value) => handleSpecialtyFilterChange(value)}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select a speciality" />
+                </SelectTrigger>
+                <SelectContent>
+                  {specialties.map((specialty) => (
+                    <SelectItem key={specialty} value={specialty}>
+                      {specialty}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               {/* Consultation Mode Filter */}
               <div data-testid="filter-header-moc" className="font-semibold mt-4 mb-2">
                 Consultation Mode
               </div>
-              <RadioGroup defaultValue="" className="flex flex-col space-y-2"
-                          onValueChange={handleConsultationModeChange}>
-                <label className="flex items-center space-x-2">
-                  <RadioGroupItem value="video" id="video" data-testid="filter-video-consult"/>
-                  <span>Video Consult</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <RadioGroupItem value="inClinic" id="inClinic" data-testid="filter-in-clinic"/>
-                  <span>In Clinic</span>
-                </label>
-              </RadioGroup>
+              <Select onValueChange={handleConsultationModeChange}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select mode" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="video">Video Consult</SelectItem>
+                  <SelectItem value="inClinic">In Clinic</SelectItem>
+                </SelectContent>
+              </Select>
 
               {/* Sort Filter */}
               <div data-testid="filter-header-sort" className="font-semibold mt-4 mb-2">
                 Sort
               </div>
-              <Button
-                variant="outline"
-                className={cn("w-full justify-start", sortOption === 'fees' && "bg-accent")}
-                onClick={() => handleSortOptionChange('fees')}
-                data-testid="sort-fees"
-              >
-                <Check className={cn("h-4 w-4 mr-2", sortOption !== 'fees' && "hidden")}/>
-                Fees
-              </Button>
-              <Button
-                variant="outline"
-                className={cn("w-full justify-start mt-2", sortOption === 'experience' && "bg-accent")}
-                onClick={() => handleSortOptionChange('experience')}
-                data-testid="sort-experience"
-              >
-                <Check className={cn("h-4 w-4 mr-2", sortOption !== 'experience' && "hidden")}/>
-                Experience
-              </Button>
+              <Select onValueChange={handleSortOptionChange}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="fees">Fees</SelectItem>
+                  <SelectItem value="experience">Experience</SelectItem>
+                </SelectContent>
+              </Select>
             </ScrollArea>
           )}
         </div>
