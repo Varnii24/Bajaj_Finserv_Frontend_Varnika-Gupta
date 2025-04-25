@@ -6,9 +6,10 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {cn} from "@/lib/utils";
 import {PanelLeft, PanelRight} from "lucide-react";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
+import {Checkbox} from "@/components/ui/checkbox";
 
 interface Doctor {
   id: string;
@@ -45,6 +46,7 @@ export default function Home() {
   const [sortOption, setSortOption] = useState<string>('');
   const [suggestions, setSuggestions] = useState<Doctor[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [expandedSpecialties, setExpandedSpecialties] = useState(false);
 
   // Fetch doctors data from API
   useEffect(() => {
@@ -156,8 +158,16 @@ export default function Home() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const resetFilters = () => {
+    setSearchQuery('');
+    setSpecialtyFilters([]);
+    setConsultationMode('');
+    setSortOption('');
+    setSuggestions([]);
+  };
+
   return (
-    <div className="bg-primary text-foreground min-h-screen flex flex-col">
+    <div className="bg-background text-foreground min-h-screen flex flex-col">
       {/* Header */}
       <div className="bg-primary p-4 w-full z-10 top-0 sticky">
         <Input
@@ -203,21 +213,31 @@ export default function Home() {
           {isSidebarOpen && (
             <ScrollArea className="h-[calc(100vh-150px)] w-full">
               {/* Specialty Filter */}
-              <div data-testid="filter-header-speciality" className="font-semibold mb-2">
-                Speciality
-              </div>
-              <Select onValueChange={(value) => handleSpecialtyFilterChange(value)}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select a speciality" />
-                </SelectTrigger>
-                <SelectContent>
-                  {specialties.map((specialty) => (
-                    <SelectItem key={specialty} value={specialty}>
-                      {specialty}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Accordion type="single" collapsible>
+                <AccordionItem value="specialties">
+                  <AccordionTrigger data-testid="filter-header-speciality" className="font-semibold mb-2">
+                    Speciality
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    {specialties.map((specialty) => (
+                      <div key={specialty} className="pl-4">
+                        <label htmlFor={`specialty-${specialty}`} className="flex items-center">
+                          <Checkbox
+                            id={`specialty-${specialty}`}
+                            checked={specialtyFilters.includes(specialty)}
+                            onCheckedChange={() => handleSpecialtyFilterChange(specialty)}
+                            data-testid={`filter-specialty-${specialty.replace(' ', '-')}`}
+                          />
+                          <span className="ml-2">{specialty}</span>
+                        </label>
+                      </div>
+                    ))}
+                    <Button variant="link" size="sm" onClick={() => setExpandedSpecialties(!expandedSpecialties)}>
+                      {expandedSpecialties ? "Show Less" : "Show More"}
+                    </Button>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
               {/* Consultation Mode Filter */}
               <div data-testid="filter-header-moc" className="font-semibold mt-4 mb-2">
@@ -246,6 +266,11 @@ export default function Home() {
                   <SelectItem value="experience">Experience</SelectItem>
                 </SelectContent>
               </Select>
+
+              {/* Reset Button */}
+              <Button variant="secondary" className="mt-4" onClick={resetFilters}>
+                Reset
+              </Button>
             </ScrollArea>
           )}
         </div>
