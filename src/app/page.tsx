@@ -312,10 +312,18 @@ const DoctorCard: React.FC<DoctorCardProps> = ({doctor}) => {
         <div data-testid="doctor-experience" className="text-sm">
           Experience: {doctor.experience}
         </div>
+         <div className="text-sm">
+          Specialties: {doctor.specialities.map((speciality) => speciality.name).join(', ')}
+        </div>
+        <div className="text-sm">
+          Languages: {doctor.languages.join(', ')}
+        </div>
         <div data-testid="doctor-fee" className="text-sm">Fee: {doctor.fees}</div>
+        <div className="text-sm">
+          Clinic: {doctor.clinic.name}, {doctor.clinic.address.locality}, {doctor.clinic.address.city}
+        </div>
         <Button className="mt-4">Book Appointment</Button>
       </CardContent>
     </Card>
   );
 };
-
