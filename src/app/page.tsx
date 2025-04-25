@@ -169,16 +169,18 @@ export default function Home() {
   return (
     <div className="bg-background text-foreground min-h-screen flex flex-col">
       {/* Header */}
-      <div className="bg-primary p-4 w-full z-10 top-0 sticky">
+      <div className="bg-primary p-4 w-full z-10 top-0 sticky flex items-center">
+        <div className="text-white font-bold text-xl mr-4">VarClinic</div>
         <Input
           type="text"
           placeholder="Search doctor by name or speciality..."
           value={searchQuery}
           onChange={(e) => handleSearchQueryChange(e.target.value)}
           data-testid="autocomplete-input"
+          className="flex-grow"
         />
         {suggestions.length > 0 && (
-          <ul className="border rounded-md mt-1 bg-secondary">
+          <ul className="border rounded-md mt-1 bg-secondary absolute top-full left-4 w-[calc(100%-8px)]">
             {suggestions.map((doctor) => (
               <li
                 key={doctor.id}
